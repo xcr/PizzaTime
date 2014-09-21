@@ -1,18 +1,12 @@
 package application;
 
-
-
 import java.io.InputStream;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,8 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-
-public class MainController implements Initializable{
+public class MainController{
 	
 	@FXML
 	private Label timer = new Label();
@@ -29,12 +22,12 @@ public class MainController implements Initializable{
 	private TextField text = new TextField();
 	@FXML
 	private Button closeButton;
+	
 	private static long seconds;
 	private InputStream pizzaStream;
 	private static boolean timerActive = false;
 
 
-	
 	public void showStage(){
 		Platform.runLater(new Runnable() {
     		@Override
@@ -44,15 +37,13 @@ public class MainController implements Initializable{
     				Stage newStage = new Stage();
     				Scene stageScene = new Scene(root);
     				newStage.setScene(stageScene);
-    				newStage.show();
-    				
+    				newStage.show();	
     			}catch(Exception e) {
     				e.printStackTrace();
     			}	
 	            
     		}
-        });
-		
+        });	
 	}
 	@FXML
 	public void closePopup(ActionEvent event){
@@ -62,11 +53,8 @@ public class MainController implements Initializable{
 	    stage.close();
 	}
 	
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		
-	}
+
+	
 	public void setLabel(String text){
 		timer.setText(text);
 	}
@@ -88,7 +76,6 @@ public class MainController implements Initializable{
 		}
 	}
 	
-	
 	@FXML
 	public void timerLabel(ActionEvent event){
 		String str = text.getText();
@@ -102,11 +89,10 @@ public class MainController implements Initializable{
 			countDown();
 		}
 		else{
-			System.out.println("Can only run one timer at the time");
-			
+			System.out.println("Can only run one timer at the time");		
 		}
-
 	}
+	
 	public static String getTimeString(){
 		String printm = "" + (seconds / 60);
 		String prints = "" + (seconds%60);
@@ -118,15 +104,10 @@ public class MainController implements Initializable{
 		}
 		return ""+printm + ":" + prints;
 	}
-       
-		
-	
 	
 	public void countDown(){
 		this.timerActive = true;
-
 		this.pizzaStream = this.getClass().getResourceAsStream("/wav/29.wav");
-
 		Timer tmr = new Timer();
 	    tmr.scheduleAtFixedRate(new TimerTask() {
 	    	@Override
@@ -146,27 +127,12 @@ public class MainController implements Initializable{
     		            	setLabel(MainController.getTimeString());
     		            }
     		            seconds--;
-    		            
-    		            
 	        		}
 	            });
 	        }
 	    },0, 1000);    
-		/*
-		System.out.println("\n\nPIZZA TIME!!!!!!!!!");
-		System.out.println("    _.:`.--|--.`:._");
-		System.out.println("  .: .'\\o  | o /'. '.");
-		System.out.println(" // '.  \\ o|  /  o '.\\");
-		System.out.println("//'._o'. \\ |o/ o_.-'o\\\\");
-		System.out.println("|| o '-.'.\\|/.-' o   ||");
-		System.out.println("||--o--o-->|<o-----o-||");
-		System.out.println("\\\\  o _.-'/|\\'-._o  o//");
-		System.out.println(" \\\\.-'  o/ |o\\ o '-.//");
-		System.out.println("  '.'.o / o|  \\ o.'.'");
-		System.out.println("    `-:/.__|__o\\:-'");
-		System.out.println("       `\"--=--\"`");
-		*/
 	}
+	
 	@SuppressWarnings("unused")
 	public static boolean isNumeric(String str)  
 	{
@@ -177,6 +143,4 @@ public class MainController implements Initializable{
 		}
 		return true;
 	}
-	
-
 }

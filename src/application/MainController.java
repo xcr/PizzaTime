@@ -75,7 +75,40 @@ public class MainController{
 			setLabel(getTimeString());	
 		}
 	}
-	
+
+
+	@FXML
+	public void handleStart15(){
+		String str = "15";
+		if(!isNumeric(str) || str.length() > 10){
+			showStage();
+			return;
+		}
+		//this.seconds = 3;
+		this.seconds = Long.parseLong(str) * 60;
+		if(timerActive == false){
+			countDown();
+		}
+		else{
+			System.out.println("Can only run one timer at the time");
+		}
+	}
+	@FXML
+	public void handleStart20(){
+		String str = "20";
+		if(!isNumeric(str) || str.length() > 10){
+			showStage();
+			return;
+		}
+		//this.seconds = 3;
+		this.seconds = Long.parseLong(str) * 60;
+		if(timerActive == false){
+			countDown();
+		}
+		else{
+			System.out.println("Can only run one timer at the time");
+		}
+	}
 	@FXML
 	public void timerLabel(ActionEvent event){
 		String str = text.getText();
@@ -108,7 +141,7 @@ public class MainController{
 	public void countDown(){
 		this.timerActive = true;
 		this.pizzaStream = this.getClass().getResourceAsStream("/wav/29.wav");
-		Timer tmr = new Timer();
+		final Timer tmr = new Timer();
 	    tmr.scheduleAtFixedRate(new TimerTask() {
 	    	@Override
 	        public void run() {

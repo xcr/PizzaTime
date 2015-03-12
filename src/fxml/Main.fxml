@@ -8,15 +8,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import application.WindowButtons?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="256.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
-      <TextField fx:id="text" layoutX="54.0" layoutY="14.0" onAction="#timerLabel" text="Enter minutes here" />
+       <WindowButtons layoutX="226.0" layoutY="0"  />
+       <TextField fx:id="text" layoutX="54.0" layoutY="34.0" onAction="#timerLabel" promptText="Enter minutes here" />
       <Label fx:id="timer" alignment="CENTER" layoutX="11.0" layoutY="60.0" prefHeight="93.0" prefWidth="235.0">
          <font>
             <Font size="64.0" />
          </font>
       </Label>
-      <Button layoutX="212.0" layoutY="14.0" mnemonicParsing="false" onAction="#addTime" prefHeight="25.0" prefWidth="30.0" text="+" />
-      <Button layoutX="212.0" layoutY="48.0" mnemonicParsing="false" onAction="#removeTime" prefHeight="25.0" prefWidth="30.0" text="-" />
+      <Button layoutX="212.0" layoutY="34.0" mnemonicParsing="false" onAction="#addTime" prefHeight="25.0" prefWidth="30.0" text="+" />
+      <Button layoutX="212.0" layoutY="68.0" mnemonicParsing="false" onAction="#removeTime" prefHeight="25.0" prefWidth="30.0" text="-" />
+      <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleStart15" text="15" />
+      <Button layoutX="14.0" layoutY="68.0" mnemonicParsing="false" onAction="#handleStart20" text="20" />
    </children>
 </Pane>

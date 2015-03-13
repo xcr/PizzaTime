@@ -38,6 +38,7 @@ public class SoundPlayer {
         sounds.put("TMNT: Turtles in time - Pizza Time", new Media(new File("res/wav/TMNT.wav").toURI().toString()));
         sounds.put("Majora's Mask - Get Mask", new Media(new File("res/wav/Majora's Mask - Get Mask.wav").toURI().toString()));
         sounds.put("Starcraft 2 - Spawn More Overlords", new Media(new File("res/wav/spawn more overlords.wav").toURI().toString()));
+        sounds.put("HAH GAYYY", new Media(new File("res/wav/HahGay.wav").toURI().toString()));
 
 
     }

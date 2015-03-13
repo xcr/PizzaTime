@@ -26,6 +26,13 @@ public class MainController{
 	private static long seconds;
 	private InputStream pizzaStream;
 	private static boolean timerActive = false;
+    private Main main;
+
+    public void setMain(Main main){
+        this.main = main;
+    }
+
+
 
 
 	public void showStage(){
@@ -33,7 +40,7 @@ public class MainController{
     		@Override
             public void run() {
     			try{
-    				Parent root = FXMLLoader.load(getClass().getResource("/fxml/popup.fxml"));
+    				Parent root = FXMLLoader.load(getClass().getResource("/fxml/Options.fxml"));
     				Stage newStage = new Stage();
     				Scene stageScene = new Scene(root);
     				newStage.setScene(stageScene);
@@ -137,31 +144,28 @@ public class MainController{
 		}
 		return ""+printm + ":" + prints;
 	}
-	
+///wav/TMNT turtles in time - Pizza Time.wav
 	public void countDown(){
 		this.timerActive = true;
-		this.pizzaStream = this.getClass().getResourceAsStream("/wav/TMNT turtles in time - Pizza Time.wav");
+		this.pizzaStream = this.getClass().getResourceAsStream("/res/wav/Majora's Mask - Get Mask.wav");
 		final Timer tmr = new Timer();
 	    tmr.scheduleAtFixedRate(new TimerTask() {
 	    	@Override
 	        public void run() {
-	        	Platform.runLater(new Runnable() {
-	        		@Override
-	                public void run() {
-	        			if(seconds <= -1){
-	        				setLabel("00:00");
-    		            	MakeSound m = new MakeSound();
-    		            	m.playSound(pizzaStream);
-    		            	tmr.cancel();
-    		            	MainController.timerActive = false;
-	        			}
-    					
-    		            if(seconds > -1){
-    		            	setLabel(MainController.getTimeString());
-    		            }
-    		            seconds--;
-	        		}
-	            });
+	        	Platform.runLater(() -> {
+                    if(seconds <= -1){
+                        setLabel("00:00");
+                        MakeSound m = new MakeSound();
+                        m.playSound(pizzaStream);
+                        tmr.cancel();
+                        MainController.timerActive = false;
+                    }
+
+                    if(seconds > -1){
+                        setLabel(MainController.getTimeString());
+                    }
+                    seconds--;
+                });
 	        }
 	    },0, 1000);    
 	}

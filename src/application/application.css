@@ -1,12 +1,13 @@
 .rofl{
     -fx-background-color: rgba(60, 63, 65, 1);
     -fx-text-fill: lightgrey;
+    -fx-border-style: dotted;
 }
 .button{
     -fx-text-fill: lightgrey;
     -fx-background-color: rgba(43,43,43,1);
     -fx-border-color: lawngreen;
-    -fx-border-style: dashed;
+    -fx-border-style: dotted;
 
 }
 

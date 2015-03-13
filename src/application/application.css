@@ -1,10 +1,12 @@
 .rofl{
-    -fx-background-color: rgba(43,43,43,1);
+    -fx-background-color: rgba(60, 63, 65, 1);
     -fx-text-fill: lightgrey;
 }
 .button{
     -fx-text-fill: lightgrey;
-    -fx-background-color: rgba(60, 63, 65, 1);
+    -fx-background-color: rgba(43,43,43,1);
+    -fx-border-color: lawngreen;
+    -fx-border-style: dashed;
 
 }
 
@@ -12,14 +14,15 @@
     -fx-background-color: rgb(90, 93, 95);
 }
 .text-field{
-    -fx-background-color: rgba(60, 63, 65, 1);
+    -fx-background-color: rgba(43,43,43,1);
     -fx-prompt-text-fill: lightgrey;
     -fx-text-fill: rgb(0,255,0);
 
 }
 
 .closeButton{
-    -fx-background-color: blue;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
     -fx-font-weight: bold;
     -fx-font-size: 15;
 }.closeButton:hover{

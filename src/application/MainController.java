@@ -19,7 +19,7 @@ public class MainController{
 	@FXML
 	private Label timer = new Label();
 	@FXML
-	private TextField text = new TextField();
+	public TextField text = new TextField();
 	@FXML
 	private Button closeButton;
 	
@@ -35,31 +35,7 @@ public class MainController{
 
 
 
-	public void showStage(){
-		Platform.runLater(new Runnable() {
-    		@Override
-            public void run() {
-    			try{
-    				Parent root = FXMLLoader.load(getClass().getResource("/fxml/Options.fxml"));
-    				Stage newStage = new Stage();
-    				Scene stageScene = new Scene(root);
-    				newStage.setScene(stageScene);
-    				newStage.show();	
-    			}catch(Exception e) {
-    				e.printStackTrace();
-    			}	
-	            
-    		}
-        });	
-	}
-	@FXML
-	public void closePopup(ActionEvent event){
-		// get a handle to the stage
-	    Stage stage = (Stage) closeButton.getScene().getWindow();
-	    // do what you have to do
-	    stage.close();
-	}
-	
+
 
 	
 	public void setLabel(String text){
@@ -87,10 +63,7 @@ public class MainController{
 	@FXML
 	public void handleStart15(){
 		String str = "15";
-		if(!isNumeric(str) || str.length() > 10){
-			showStage();
-			return;
-		}
+
 		//this.seconds = 3;
 		this.seconds = Long.parseLong(str) * 60;
 		if(timerActive == false){
@@ -103,10 +76,7 @@ public class MainController{
 	@FXML
 	public void handleStart20(){
 		String str = "20";
-		if(!isNumeric(str) || str.length() > 10){
-			showStage();
-			return;
-		}
+
 		//this.seconds = 3;
 		this.seconds = Long.parseLong(str) * 60;
 		if(timerActive == false){
@@ -119,8 +89,10 @@ public class MainController{
 	@FXML
 	public void timerLabel(ActionEvent event){
 		String str = text.getText();
+        if(str.toLowerCase().equals("options")){
+            main.showOptions();
+        }
 		if(!isNumeric(str) || str.length() > 10){
-			showStage();
 			return;
 			}
 		//this.seconds = 3;

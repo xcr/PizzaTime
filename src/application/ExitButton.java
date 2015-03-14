@@ -17,6 +17,8 @@ public class ExitButton extends Button {
         public ExitButton() {
             this.setText("x");
             this.getStyleClass().add("closeButton");
+
+
             this.setOnAction(actionEvent -> Platform.exit());
         }
     }

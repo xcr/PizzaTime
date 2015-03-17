@@ -1,13 +1,13 @@
 .rofl{
     -fx-background-color: rgba(60, 63, 65, 1);
-    -fx-text-fill: lightgrey;
-    -fx-border-style: dotted;
+    -fx-text-fill: #00FF00;
+    -fx-border-style: solid;
 }
 .button{
-    -fx-text-fill: lightgrey;
+    -fx-text-fill: #00FF00;
     -fx-background-color: rgba(43,43,43,1);
-    -fx-border-color: lawngreen;
-    -fx-border-style: dotted;
+    -fx-border-color: #000000;
+    -fx-border-style: solid;
 
 }
 
@@ -16,28 +16,25 @@
 }
 .text-field{
     -fx-background-color: rgba(43,43,43,1);
-    -fx-prompt-text-fill: grey;
-    -fx-text-fill: rgb(0,255,0);
+    -fx-prompt-text-fill: #005500;
+    -fx-text-fill: #00FF00;
+    -fx-border-style: solid;
 
 }
 
 .closeButton{
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-font-weight: bold;
-    -fx-font-size: 15;
+
+
 }
-.closeButton:hover{
-    -fx-background-color: transparent;
-}
+
 .label{
-    -fx-text-fill: lightgrey;
+    -fx-text-fill: #00FF00;
 }
 .list-view{
     -fx-background-insets: 0;
-    -fx-border-color: black;
+    -fx-border-color: transparent;
     -fx-background-color: transparent;
-    -fx-border-width: 0;
+
 
 
 }
@@ -46,8 +43,8 @@
 }
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color: rgb(95, 95, 95);
-}
 
+}
 .list-cell:odd{
     -fx-background-color: rgba(60, 63, 65, 1);
 }.list-cell:even{

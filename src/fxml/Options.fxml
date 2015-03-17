@@ -7,7 +7,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="350" prefWidth="200" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OptionsController">
- <ListView fx:id="soundList" layoutX="2" layoutY="0" prefHeight="300" prefWidth="200" />
+
+    <ListView fx:id="soundList" layoutX="2" layoutY="0" prefHeight="300" prefWidth="200" />
+    <Button fx:id="save" prefHeight="27" prefWidth="54" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="20" onAction="#okClicked" text="Save"/>
+    <Button fx:id="cancel" prefHeight="27" prefWidth="54"  AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="20" onAction="#cancelClicked" text="Cancel"/>
+   <!-- <Button layoutX="150" layoutY="320" onAction="#rofl" text="lol"/> -->
+
+
 
 
 </AnchorPane>

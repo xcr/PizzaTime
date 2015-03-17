@@ -9,34 +9,38 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
+import sun.misc.IOUtils;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 
-public class Main extends Application {
+public class MainApp extends Application {
 
     private double xOffset;
     private double yOffset;
     private Stage primaryStage;
     private MainController mc;
+    private static Media selectedSound;
 
 
     @Override
 	public void start(final Stage primaryStage) throws IOException {
 		try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("/fxml/Main.fxml"));
+            loader.setLocation(MainApp.class.getResource("/fxml/Main.fxml"));
             primaryStage.setTitle("PizzaTime");
             this.primaryStage = primaryStage;
             Pane pane = (Pane)loader.load();
             Scene scene = new Scene(pane);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
 
             primaryStage.initStyle(StageStyle.UNDECORATED);
 			primaryStage.setScene(scene);
@@ -48,7 +52,11 @@ public class Main extends Application {
             mc.setMain(this);
             mc.text.setText("options");
             mc.text.requestFocus();
+            mc.setStage(primaryStage);
             setWindowSettings(pane, primaryStage);
+
+            setStartSound();
+
 
 
 		} catch(Exception e) {
@@ -68,7 +76,7 @@ public class Main extends Application {
         try {
             //loads the fxml.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("/fxml/Options.fxml"));
+            loader.setLocation(MainApp.class.getResource("/fxml/Options.fxml"));
 
             //creates the the popup window
             Stage stage = new Stage();
@@ -91,7 +99,7 @@ public class Main extends Application {
 
             //wait for the user to finish in the popup window before it continues
             stage.showAndWait();
-            return controller.okClicked();
+            return controller.getOk();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -115,9 +123,24 @@ public class Main extends Application {
             }
         });
 
+
         //css
         n.getStyleClass().add("rofl");
     }
+    public static Media getSelectedSound(){
+        return selectedSound;
+    }
+    public static void setSelectedSound(Media m){
+        selectedSound = m;
+    }
+    public void setStartSound() throws IOException {
+       Scanner in = new Scanner(new FileReader("res/sound.txt"));
+        String str = in.nextLine();
+        System.out.println(str);
+        selectedSound = new Media(new File("res/wav/"+str).toURI().toString());
+        in.close();
+    }
+
 	public static void main(String[] args) {
 		launch(args);
 	}

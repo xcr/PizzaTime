@@ -1,20 +1,20 @@
 package application;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class MainController{
+public class MainController implements Initializable{
 	
 	@FXML
 	private Label timer = new Label();
@@ -26,9 +26,10 @@ public class MainController{
 	private static long seconds;
 	private InputStream pizzaStream;
 	private static boolean timerActive = false;
-    private Main main;
+    private MainApp main;
+    private Stage stage;
 
-    public void setMain(Main main){
+    public void setMain(MainApp main){
         this.main = main;
     }
 
@@ -36,7 +37,16 @@ public class MainController{
 
 
 
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("lol");
+        closeButton.setStyle(         "-fx-min-width: 20; " +
+                "-fx-min-height: 20; " +
+                "-fx-max-width: 20; " +
+                "-fx-max-height: 20;" +
+                "-fx-font-weight: bold;" +
+        "-fx-font-size: 9;");
+    }
 	
 	public void setLabel(String text){
 		timer.setText(text);
@@ -127,8 +137,7 @@ public class MainController{
 	        	Platform.runLater(() -> {
                     if(seconds <= -1){
                         setLabel("00:00");
-                        MakeSound m = new MakeSound();
-                        m.playSound(pizzaStream);
+                        SoundPlayer.playSound(main.getSelectedSound());
                         tmr.cancel();
                         MainController.timerActive = false;
                     }
@@ -152,4 +161,15 @@ public class MainController{
 		}
 		return true;
 	}
+
+        public void handleExit(ActionEvent actionEvent) {
+            this.stage.close();
+
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+
 }

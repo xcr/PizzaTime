@@ -17,9 +17,11 @@ import java.util.HashMap;
 
 public class SoundPlayer {
 
-    private Media bip = new Media(new File("src/wav/TMNT.wav").toURI().toString());
+  //  private Media bip = new Media(new File("src/wav/TMNT - PizzaTime.wav").toURI().toString());
     private  static MediaPlayer mediaPlayer;
     private static ObservableMap<String,Media> sounds = FXCollections.observableHashMap();
+    private static int i = 0;
+    private static String path = "res/wav/";
 
     public static ObservableMap<String, Media> getSounds() {
         return sounds;
@@ -31,17 +33,23 @@ public class SoundPlayer {
     }
 
     public  static void importFiles() throws IOException{
-     /*   Files.walk(Paths.get("res/wav/")).forEach(filePath -> {
-            if (Files.isRegularFile(filePath)) ;
-            System.out.println( i +filePath.getFileName().toString());
-           i++;
-        });*/
+       Files.walk(Paths.get("res/wav/")).forEach(filePath -> {
 
-        sounds.put("TMNT: Turtles in time - Pizza Time", new Media(new File("res/wav/TMNT.wav").toURI().toString()));
+            if (Files.isRegularFile(filePath) && i > 0) {
+                String str = filePath.getFileName().toString();
+                System.out.println(i + str);
+
+                sounds.put(str.substring(0,str.length()-4),
+                        new Media(new File(path+str).toURI().toString()));
+            }
+                i++;
+        });
+/*
+        sounds.put("TMNT: Turtles in time - Pizza Time", new Media(new File("res/wav/TMNT - PizzaTime.wav").toURI().toString()));
         sounds.put("Majora's Mask - Get Mask", new Media(new File("res/wav/Majora's Mask - Get Mask.wav").toURI().toString()));
         sounds.put("Starcraft2 - Spawn More Overlords", new Media(new File("res/wav/spawn more overlords.wav").toURI().toString()));
         sounds.put("HAH GAYYY", new Media(new File("res/wav/HahGay.wav").toURI().toString()));
-
+*/
 
     }
 

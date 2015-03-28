@@ -137,7 +137,7 @@ public class MainController implements Initializable{
 	        	Platform.runLater(() -> {
                     if(seconds <= -1){
                         setLabel("00:00");
-                        SoundPlayer.playSound(main.getSelectedSound());
+                        main.playSound(main.getSelectedSound());
                         tmr.cancel();
                         MainController.timerActive = false;
                     }

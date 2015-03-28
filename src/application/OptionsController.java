@@ -22,16 +22,20 @@ public class OptionsController {
     @FXML
     private Button save, cancel;
     private boolean ok;
+    private MainApp main;
 
+    public void setMain(MainApp main){
+        this.main = main;
+    }
 
     public void setData(){
 
-        soundList.getItems().addAll(SoundPlayer.getSounds().keySet());
+        soundList.getItems().addAll(main.getSounds());
         Collections.sort(soundList.getItems(), String.CASE_INSENSITIVE_ORDER);
         soundList.setOnMouseClicked(event -> {
             System.out.println(soundList.getSelectionModel().getSelectedItem().toString());
             if(event.getClickCount() == 2){
-            SoundPlayer.playSound(SoundPlayer.getSounds().get(soundList.getSelectionModel().getSelectedItem()));
+            main.playSound(soundList.getSelectionModel().getSelectedItem());
             }
         });
     }
@@ -51,7 +55,7 @@ public class OptionsController {
     }
     public void  okClicked(){
         if(soundList.getSelectionModel().getSelectedIndex() != -1){
-            MainApp.setSelectedSound(SoundPlayer.getSounds().get(soundList.getSelectionModel().getSelectedItem()));
+           main.setSelectedSound(soundList.getSelectionModel().getSelectedItem());
         };
         stage.close();
     }

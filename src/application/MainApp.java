@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -17,9 +18,15 @@ import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Map;
-import java.util.Scanner;
+import java.nio.file.*;
+import java.security.CodeSource;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 
 public class MainApp extends Application {
@@ -28,8 +35,9 @@ public class MainApp extends Application {
     private double yOffset;
     private Stage primaryStage;
     private MainController mc;
-    private static Media selectedSound;
-    private SoundPlayer soundPlayer;
+    private static  String selectedSound;
+
+    private static ArrayList<String> sounds = new ArrayList<String>();
 
 
     /*
@@ -47,7 +55,7 @@ public class MainApp extends Application {
             this.primaryStage = primaryStage;
             Pane pane = (Pane)loader.load();
             Scene scene = new Scene(pane);
-			scene.getStylesheets().add(getClass().getResource("/css/pink.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 
             primaryStage.initStyle(StageStyle.UNDECORATED);
 			primaryStage.setScene(scene);
@@ -62,9 +70,7 @@ public class MainApp extends Application {
             mc.setStage(primaryStage);
             setWindowSettings(pane, primaryStage);
 
-
-            this.soundPlayer = new SoundPlayer();
-            soundPlayer.importFiles();
+            loadSounds();
 
             setStartSound();
 
@@ -77,19 +83,7 @@ public class MainApp extends Application {
         //SoundPlayer.playSound(SoundPlayer.getSounds().get("Starcraft 2 - Spawn more overlords"));
 	}
 
-    public void stop() throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter(this.getClass().getResource("/res/sound.txt").getPath());
-        writer.flush();
 
-
-        for (Map.Entry<String, Media> entry : SoundPlayer.getSounds().entrySet()) {
-            if(entry.getValue() == selectedSound){
-                writer.write(entry.getKey());
-            }
-        }
-        writer.close();
-
-    }
     public  boolean showOptions() {
 
         try {
@@ -104,13 +98,14 @@ public class MainApp extends Application {
             stage.initStyle(StageStyle.UNDECORATED);
             Pane page = (Pane)loader.load();
             Scene scene = new Scene(page);
-            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
             stage.setScene(scene);
             stage.setResizable(false);
             setWindowSettings(page, stage);
 
             //makes a reference to the application controller and sets the datafields.
             OptionsController controller = loader.getController();
+            controller.setMain(this);
             controller.setStage(stage);
             controller.setData();
 
@@ -125,6 +120,9 @@ public class MainApp extends Application {
 
     }
 
+    public ArrayList<String> getSounds(){
+        return this.sounds;
+    }
 	public void setWindowSettings(Node n, Stage stage){
         n.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -147,19 +145,77 @@ public class MainApp extends Application {
         //css
         n.getStyleClass().add("rofl");
     }
-    public static Media getSelectedSound(){
+    public String getSelectedSound(){
         return selectedSound;
     }
-    public static void setSelectedSound(Media m){
+    public void setSelectedSound(String m){
         selectedSound = m;
     }
-    public void setStartSound() throws IOException {
+    public void setStartSound() throws IOException{
+
+
+        //AudioClip plonkSound = new AudioClip(this.getClass().getResource("/wav/Dexter - Launchee Time.wav").toURI().toString());
+      // playSound(selectedSound);
+
 
        Scanner in = new Scanner(this.getClass().getResourceAsStream("/res/sound.txt"));
-        String str = in.nextLine();
-        System.out.println(str);
-        selectedSound = SoundPlayer.getSounds().get(str);
+        this.selectedSound = in.nextLine();
         in.close();
+
+    }
+    public void stop() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(this.getClass().getResource("/res/sound.txt").getPath());
+        writer.flush();
+        writer.write(selectedSound);
+        writer.close();
+
+    }
+
+    public void playSound(String s) {
+
+        AudioClip ac  = null;
+        try {
+            ac = new AudioClip(this.getClass().getResource("/wav/"+s+".wav").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        ac.play();
+    }
+
+    public void loadSounds() throws IOException {
+        URI uri = null;
+        try {
+            uri = this.getClass().getResource("/wav").toURI();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        Path myPath;
+        if (uri.getScheme().equals("jar")) {
+            FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            myPath = fileSystem.getPath("/wav");
+        } else {
+            myPath = Paths.get(uri);
+        }
+        Stream<Path> walk = Files.walk(myPath, 1);
+        for (Iterator<Path> it = walk.iterator(); it.hasNext();){
+            String str = it.next().toString();
+           // System.out.println(str);
+            if(str.endsWith(".wav")){
+                String[] parts;
+                if(str.startsWith("C")){
+                    parts = str.split("\\\\");
+                }
+                else{
+                    parts = str.split("/");
+                }
+                System.out.println(parts[parts.length-1].substring(0, parts[parts.length - 1].length() - 4));
+                sounds.add(parts[parts.length-1].substring(0, parts[parts.length - 1].length()-4));
+               // System.out.println(str.substring(0,parts[parts.length-1].length()-4));
+            }
+
+        }
+
     }
 
 	public static void main(String[] args) {

@@ -99,7 +99,7 @@ public class MainController implements Initializable{
 	@FXML
 	public void timerLabel(ActionEvent event){
 		String str = text.getText();
-        if(str.toLowerCase().equals("options")){
+        if(str.toLowerCase().equals("sounds")){
             main.showOptions();
         }
 		if(!isNumeric(str) || str.length() > 10){

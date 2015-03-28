@@ -15,9 +15,10 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
-import sun.misc.IOUtils;
 
 import java.io.*;
+import java.net.URL;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -28,6 +29,13 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private MainController mc;
     private static Media selectedSound;
+    private SoundPlayer soundPlayer;
+
+
+    /*
+    todo:
+    Write a class for the media files
+     */
 
 
     @Override
@@ -39,38 +47,49 @@ public class MainApp extends Application {
             this.primaryStage = primaryStage;
             Pane pane = (Pane)loader.load();
             Scene scene = new Scene(pane);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
+			scene.getStylesheets().add(getClass().getResource("/css/pink.css").toExternalForm());
 
             primaryStage.initStyle(StageStyle.UNDECORATED);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Pizza Time!");
 			primaryStage.show();
 			primaryStage.setResizable(false);
-			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("pizza.png")));
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/res/pizza.png")));
             mc =loader.getController();
             mc.setMain(this);
-            mc.text.setText("options");
+
             mc.text.requestFocus();
             mc.setStage(primaryStage);
             setWindowSettings(pane, primaryStage);
 
+
+            this.soundPlayer = new SoundPlayer();
+            soundPlayer.importFiles();
+
             setStartSound();
-
-
 
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 
-        SoundPlayer.importFiles();
      //  SoundPlayer.playSound(SoundPlayer.getSounds().get("TMNT: Turtles in time - Pizza Time"));
        // SoundPlayer.playSound(SoundPlayer.getSounds().get("Majora's Mask - Get Mask"));
         //SoundPlayer.playSound(SoundPlayer.getSounds().get("Starcraft 2 - Spawn more overlords"));
 	}
 
+    public void stop() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(this.getClass().getResource("/res/sound.txt").getPath());
+        writer.flush();
 
 
+        for (Map.Entry<String, Media> entry : SoundPlayer.getSounds().entrySet()) {
+            if(entry.getValue() == selectedSound){
+                writer.write(entry.getKey());
+            }
+        }
+        writer.close();
+
+    }
     public  boolean showOptions() {
 
         try {
@@ -80,7 +99,6 @@ public class MainApp extends Application {
 
             //creates the the popup window
             Stage stage = new Stage();
-            stage.setTitle("Options");
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(primaryStage);
             stage.initStyle(StageStyle.UNDECORATED);
@@ -124,6 +142,8 @@ public class MainApp extends Application {
         });
 
 
+
+
         //css
         n.getStyleClass().add("rofl");
     }
@@ -134,10 +154,11 @@ public class MainApp extends Application {
         selectedSound = m;
     }
     public void setStartSound() throws IOException {
-       Scanner in = new Scanner(new FileReader("res/sound.txt"));
+
+       Scanner in = new Scanner(this.getClass().getResourceAsStream("/res/sound.txt"));
         String str = in.nextLine();
         System.out.println(str);
-        selectedSound = new Media(new File("res/wav/"+str).toURI().toString());
+        selectedSound = SoundPlayer.getSounds().get(str);
         in.close();
     }
 

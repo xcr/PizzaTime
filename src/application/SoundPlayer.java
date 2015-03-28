@@ -5,8 +5,8 @@ import javafx.collections.ObservableMap;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -21,7 +21,8 @@ public class SoundPlayer {
     private  static MediaPlayer mediaPlayer;
     private static ObservableMap<String,Media> sounds = FXCollections.observableHashMap();
     private static int i = 0;
-    private static String path = "res/wav/";
+    private static String path = "src/wav/";
+
 
     public static ObservableMap<String, Media> getSounds() {
         return sounds;
@@ -32,17 +33,33 @@ public class SoundPlayer {
         mediaPlayer.play();
     }
 
-    public  static void importFiles() throws IOException{
-       Files.walk(Paths.get("res/wav/")).forEach(filePath -> {
+    public  void importFiles() throws IOException, URISyntaxException {
 
+
+            ClassLoader loader = SoundPlayer.class.getClassLoader();
+            InputStream in = loader.getResourceAsStream(".");
+            BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
+            String line;
+
+            while ((line = rdr.readLine()) != null) {
+                if(!line.equals("wav") && line.substring(line.length()-3,line.length()).equals("wav")){
+                    System.out.println("Line: "+ "C:/Users/Eirik/Git/pizzatime/src/wav/"+line);
+                      sounds.put(line.substring(0, line.length() - 4),new Media(this.getClass().getResource("src/wav/"+line).toURI().toString()));
+              
+                }
+            }
+            rdr.close();
+
+
+        /*
+        Files.walk(Paths.get("src/wav/")).forEach(filePath -> {
             if (Files.isRegularFile(filePath) && i > 0) {
                 String str = filePath.getFileName().toString();
                 System.out.println(i + str);
 
-                sounds.put(str.substring(0,str.length()-4),
-                        new Media(new File(path+str).toURI().toString()));
+
             }
-                i++;
+            i++;
         });
 /*
         sounds.put("TMNT: Turtles in time - Pizza Time", new Media(new File("res/wav/TMNT - PizzaTime.wav").toURI().toString()));

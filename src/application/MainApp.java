@@ -74,6 +74,10 @@ public class MainApp extends Application {
 
             setStartSound();
 
+            System.out.println((System.getProperty("user.home") + "\\PizzaTime"));
+            setUpPreferenceFolder();
+
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -157,14 +161,22 @@ public class MainApp extends Application {
         //AudioClip plonkSound = new AudioClip(this.getClass().getResource("/wav/Dexter - Launchee Time.wav").toURI().toString());
       // playSound(selectedSound);
 
-
-       Scanner in = new Scanner(this.getClass().getResourceAsStream("/res/sound.txt"));
+       Scanner in;
+        File file = new File(System.getProperty("user.home")+"\\PizzaTime\\sound.cfg");
+        if (file.exists()) {
+            // ...
+             in = new Scanner(file);
+        }
+        else{
+        in = new Scanner(this.getClass().getResourceAsStream("/res/sound.txt"));
+        }
         this.selectedSound = in.nextLine();
         in.close();
 
     }
     public void stop() throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter(this.getClass().getResource("/res/sound.txt").getPath());
+        System.out.println(selectedSound);
+        PrintWriter writer = new PrintWriter(System.getProperty("user.home")+"\\PizzaTime\\sound.cfg");
         writer.flush();
         writer.write(selectedSound);
         writer.close();
@@ -216,6 +228,29 @@ public class MainApp extends Application {
 
         }
 
+    }
+    public void setUpPreferenceFolder(){
+
+
+        File theDir = new File(System.getProperty("user.home")+"\\PizzaTime");
+
+// if the directory does not exist, create it
+        if (!theDir.exists()) {
+            System.out.println("creating directory: PizzaTime");
+
+            try{
+                theDir.mkdir();
+
+
+            }
+            catch(SecurityException se){
+                se.printStackTrace();
+            }
+
+        }
+        else{
+            System.out.println("Preference folder already exists");
+        }
     }
 
 	public static void main(String[] args) {

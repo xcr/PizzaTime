@@ -1,59 +1,52 @@
 package application;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class MainController{
+public class MainController implements Initializable{
 	
 	@FXML
 	private Label timer = new Label();
 	@FXML
-	private TextField text = new TextField();
+	public TextField text = new TextField();
 	@FXML
 	private Button closeButton;
 	
 	private static long seconds;
 	private InputStream pizzaStream;
 	private static boolean timerActive = false;
+    private MainApp main;
+    private Stage stage;
+
+    public void setMain(MainApp main){
+        this.main = main;
+    }
 
 
-	public void showStage(){
-		Platform.runLater(new Runnable() {
-    		@Override
-            public void run() {
-    			try{
-    				Parent root = FXMLLoader.load(getClass().getResource("/fxml/popup.fxml"));
-    				Stage newStage = new Stage();
-    				Scene stageScene = new Scene(root);
-    				newStage.setScene(stageScene);
-    				newStage.show();	
-    			}catch(Exception e) {
-    				e.printStackTrace();
-    			}	
-	            
-    		}
-        });	
-	}
-	@FXML
-	public void closePopup(ActionEvent event){
-		// get a handle to the stage
-	    Stage stage = (Stage) closeButton.getScene().getWindow();
-	    // do what you have to do
-	    stage.close();
-	}
-	
 
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("lol");
+        closeButton.setStyle(         "-fx-min-width: 20; " +
+                "-fx-min-height: 20; " +
+                "-fx-max-width: 20; " +
+                "-fx-max-height: 20;" +
+                "-fx-font-weight: bold;" +
+        "-fx-font-size: 9;");
+    }
 	
 	public void setLabel(String text){
 		timer.setText(text);
@@ -80,10 +73,7 @@ public class MainController{
 	@FXML
 	public void handleStart15(){
 		String str = "15";
-		if(!isNumeric(str) || str.length() > 10){
-			showStage();
-			return;
-		}
+
 		//this.seconds = 3;
 		this.seconds = Long.parseLong(str) * 60;
 		if(timerActive == false){
@@ -96,10 +86,7 @@ public class MainController{
 	@FXML
 	public void handleStart20(){
 		String str = "20";
-		if(!isNumeric(str) || str.length() > 10){
-			showStage();
-			return;
-		}
+
 		//this.seconds = 3;
 		this.seconds = Long.parseLong(str) * 60;
 		if(timerActive == false){
@@ -112,8 +99,10 @@ public class MainController{
 	@FXML
 	public void timerLabel(ActionEvent event){
 		String str = text.getText();
+        if(str.toLowerCase().equals("sounds")){
+            main.showOptions();
+        }
 		if(!isNumeric(str) || str.length() > 10){
-			showStage();
 			return;
 			}
 		//this.seconds = 3;
@@ -137,31 +126,27 @@ public class MainController{
 		}
 		return ""+printm + ":" + prints;
 	}
-	
+///wav/TMNT turtles in time - Pizza Time.wav
 	public void countDown(){
 		this.timerActive = true;
-		this.pizzaStream = this.getClass().getResourceAsStream("/wav/29.wav");
+		this.pizzaStream = this.getClass().getResourceAsStream("/res/wav/Majora's Mask - Get Mask.wav");
 		final Timer tmr = new Timer();
 	    tmr.scheduleAtFixedRate(new TimerTask() {
 	    	@Override
 	        public void run() {
-	        	Platform.runLater(new Runnable() {
-	        		@Override
-	                public void run() {
-	        			if(seconds <= -1){
-	        				setLabel("00:00");
-    		            	MakeSound m = new MakeSound();
-    		            	m.playSound(pizzaStream);
-    		            	tmr.cancel();
-    		            	MainController.timerActive = false;
-	        			}
-    					
-    		            if(seconds > -1){
-    		            	setLabel(MainController.getTimeString());
-    		            }
-    		            seconds--;
-	        		}
-	            });
+	        	Platform.runLater(() -> {
+                    if(seconds <= -1){
+                        setLabel("00:00");
+                        main.playSound(main.getSelectedSound());
+                        tmr.cancel();
+                        MainController.timerActive = false;
+                    }
+
+                    if(seconds > -1){
+                        setLabel(MainController.getTimeString());
+                    }
+                    seconds--;
+                });
 	        }
 	    },0, 1000);    
 	}
@@ -176,4 +161,15 @@ public class MainController{
 		}
 		return true;
 	}
+
+        public void handleExit(ActionEvent actionEvent) {
+            this.stage.close();
+
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+
 }

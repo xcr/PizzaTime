@@ -1,0 +1,61 @@
+.rofl{
+    -fx-background-color: hotpink;
+    -fx-text-fill: #ffffff;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+}
+.button{
+    -fx-text-fill: #ffffff;
+    -fx-background-color: pink;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+
+
+}
+
+.button:hover{
+    -fx-background-color: lightpink;
+}
+.text-field{
+    -fx-background-color: pink;
+    -fx-prompt-text-fill: grey;
+    -fx-text-fill: #ffffff;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+
+}
+
+.closeButton{
+
+
+}
+
+.label{
+    -fx-text-fill: #FFFFFF;
+}
+.list-view{
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+
+
+
+}
+.list-cell{
+    -fx-text-fill: #ffffff;
+}
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: rgb(95, 95, 95);
+
+}
+.list-cell:odd{
+    -fx-background-color: rgba(60, 63, 65, 1);
+}.list-cell:even{
+     -fx-background-color: rgba(43,43,43,1);
+ }
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}
